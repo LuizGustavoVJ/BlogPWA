@@ -49,7 +49,7 @@ namespace PWABlog.ViewModels.Home
     public class PostagemPopularHomeIndex
     {
         public string Titulo { get; set; }
-        public int PostagemId { get; set; }
+        public string PostagemId { get; set; }
         public string Categoria { get; set; }
     }
 }

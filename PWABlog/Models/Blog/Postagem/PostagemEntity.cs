@@ -5,6 +5,7 @@ using PWABlog.Models.Blog.Postagem.Revisao;
 using System.ComponentModel.DataAnnotations;
 using PWABlog.Models.Blog.Postagem.Classificacao;
 using PWABlog.Models.Blog.Postagem.Comentario;
+using System;
 
 namespace PWABlog.Models.Blog.Postagem
 {
@@ -24,6 +25,8 @@ namespace PWABlog.Models.Blog.Postagem
         public AutorEntity Autor { get; set; }
 
         public CategoriaEntity Categoria { get; set; }
+
+        public DateTime DataPostagem { get; set; }
 
         public List<PostagemEtiquetaEntity> PostagensEtiquetas { get; set; }
 

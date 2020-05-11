@@ -12,7 +12,7 @@
     @foreach (PostagemHomeIndex postagem in @Model.Postagens)
     {
         <div class="w3-card-4 w3-margin w3-white">
-            <img src="https://i.ytimg.com/vi/HfnabAnJRZE/maxresdefault.jpg" alt="@postagem.Titulo" style="width:100%">
+            <img src="https://via.placeholder.com/650x200?text=Imagem  da Postagem" alt="@postagem.Titulo" style="width:100%">
             <div class="w3-container">
                 <h3>
                     <b>@postagem.Titulo</b>
@@ -36,7 +36,6 @@
                         <p>
                             <span class="w3-padding-large w3-right">
                                 <b>Comentários </b> <span class="w3-tag">@postagem.NumeroComentarios</span>
-                                <!--<b>Comments </b> <span class="w3-badge">2</span>-->
                             </span>
                         </p>
                     </div>
@@ -62,7 +61,7 @@
             </p>
         </div>
     </div>
-    
+
     <!-- Etiquetas -->
     <div class="w3-card w3-margin">
         <div class="w3-container w3-padding">
@@ -92,18 +91,17 @@
                     <span>@postagemPopular.Categoria</span>
                 </li>
             }
-            </ul>
+        </ul>
     </div>
+</div>
 
-    <!-- Sobre Mim -->
-    <div class="w3-card w3-margin w3-margin-top">
-        <img src="~/D:\DEPENDENCIAS_2020\PWA\PWA-master/finotello.jpg" style="width:100%">
-        <div class="w3-container w3-white">
-            <h4>
-                <b>Luiz Gustavo Finotello</b>
-            </h4>
-            <p>Isto também passará!</p>
-        </div>
+<!-- Sobre Mim -->
+<div class="w3-card w3-margin w3-margin-top">
+    <img src="~/imagens/programacao.jpg" style="width:100%">
+    <div class="w3-container w3-white">
+        <h4>
+            <b>Luiz Gustavo Finotello</b>
+        </h4>
+        <p>Isto também passará!</p>
     </div>
-    
 </div>
