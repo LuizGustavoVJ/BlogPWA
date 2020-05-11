@@ -52,6 +52,7 @@ namespace PWABlog.Controllers
                 postagemHomeIndex.Titulo = postagem.Titulo;
                 postagemHomeIndex.Descricao = postagem.Descricao;
                 postagemHomeIndex.Categoria = postagem.Categoria.Nome;
+                postagemHomeIndex.DataPostagem = postagem.DataPostagem;
                 postagemHomeIndex.NumeroComentarios = postagem.Comentarios.Count.ToString();
                 postagemHomeIndex.PostagemId = postagem.Id.ToString();
                 
