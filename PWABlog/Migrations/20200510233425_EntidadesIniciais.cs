@@ -211,7 +211,8 @@ namespace PWABlog.Migrations
                     Titulo = table.Column<string>(maxLength: 128, nullable: false),
                     Descricao = table.Column<string>(maxLength: 640, nullable: false),
                     AutorId = table.Column<int>(nullable: true),
-                    CategoriaId = table.Column<int>(nullable: true)
+                    CategoriaId = table.Column<int>(nullable: true),
+                    DataPostagem = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {

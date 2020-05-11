@@ -22,7 +22,7 @@ namespace PWABlog.Models.Blog.Postagem
                 .Include(p => p.Categoria)
                 .Include(p => p.Revisoes)
                 .Include(p => p.Comentarios)
-                .Where(x => x.DataPostagem < DateTime.Now).ToList();
+                .ToList();
         
         }
 

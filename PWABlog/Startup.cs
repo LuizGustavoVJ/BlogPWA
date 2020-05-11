@@ -12,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using PWABlog.ControleDeAcesso;
 using PWABlog.Models.Blog.Autor;
 using PWABlog.Models.Blog.Categoria;
+using PWABlog.Models.Blog.Etiqueta;
 using PWABlog.Models.Blog.Postagem;
 
 namespace PWABlog
@@ -42,6 +43,7 @@ namespace PWABlog
             services.AddTransient<CategoriaOrmService>();
             services.AddTransient<PostagemOrmService>();
             services.AddTransient<AutorOrmService>();
+            services.AddTransient<EtiquetaOrmService>();
 
             // Adicionar os serviços que possibilitam o funcionamento dos controllers e das views
             services.AddControllersWithViews();
