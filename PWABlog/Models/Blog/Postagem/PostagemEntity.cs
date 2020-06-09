@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using PWABlog.Models.Blog.Postagem.Classificacao;
 using PWABlog.Models.Blog.Postagem.Comentario;
 using System;
+using System.Linq;
 
 namespace PWABlog.Models.Blog.Postagem
 {
@@ -43,6 +44,11 @@ namespace PWABlog.Models.Blog.Postagem
             Revisoes = new List<RevisaoEntity>();
             Comentarios = new List<ComentarioEntity>();
             Classificacoes = new List<ClassificacaoEntity>();
+        }
+
+        public RevisaoEntity ObterUltimaRevisao()
+        {
+            return Revisoes.OrderByDescending(r => r.Versao).FirstOrDefault();
         }
     }
 }

@@ -18,31 +18,24 @@ namespace PWABlog.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly CategoriaOrmService _categoriaOrmService;
         private readonly PostagemOrmService _postagemOrmService;
-        private readonly AutorOrmService _autorOrmService;
-        private readonly EtiquetaOrmService _etiquetaOrmService;
 
 
         public HomeController(
             ILogger<HomeController> logger,
             CategoriaOrmService categoriaOrmService,
-            PostagemOrmService postagemOrmService,
-            AutorOrmService autorOrmService,
-            EtiquetaOrmService etiquetaOrmService
+            PostagemOrmService postagemOrmService
         )
         {
             _logger = logger;
             _categoriaOrmService = categoriaOrmService;
             _postagemOrmService = postagemOrmService;
-            _autorOrmService = autorOrmService;
-            _etiquetaOrmService = etiquetaOrmService;
         }
 
         public IActionResult Index()
         {   
             // Instanciar a ViewModel
             HomeIndexViewModel model = new HomeIndexViewModel();
-            model.TituloPagina = "Página Home";
-            
+
             // Alimentar a lista de postagens que serão exibidas na view
             List<PostagemEntity> listaPostagens = _postagemOrmService.ObterPostagens();
             
@@ -77,11 +70,8 @@ namespace PWABlog.Controllers
                 
                 model.Categorias.Add(categoriaHomeIndex);
 
-                // Alimentar a lista de etiquetas que serão exibidas na view, a partir das etiquetas da categoria
-                List<EtiquetaEntity> listaEtiquetas = _etiquetaOrmService.ObterEtiquetas();
-                listaEtiquetas.Add(new EtiquetaEntity());
-
-                foreach (EtiquetaEntity etiqueta in categoria.Etiquetas)
+               // Alimentar a lista de etiquetas que serão exibidas na view, a partir das etiquetas da categoria
+               foreach (EtiquetaEntity etiqueta in categoria.Etiquetas)
                 {
                     EtiquetaHomeIndex etiquetaHomeIndex = new EtiquetaHomeIndex();
                     etiquetaHomeIndex.Nome = etiqueta.Nome;

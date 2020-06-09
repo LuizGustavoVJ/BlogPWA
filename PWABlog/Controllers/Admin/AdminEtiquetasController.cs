@@ -35,14 +35,15 @@ namespace PWABlog.Controllers.Admin
             ViewBag.erro = TempData["erro-msg"];
             return View();
         }
+
         public RedirectToActionResult Criar(AdminEtiquetasCriarRequestModel request)
         {
             var nome = request.Nome;
-            var categoria = request.Categoria;
+            var idCategoria = Convert.ToInt32(request.IdCategoria);
 
             try
             {
-                _etiquetaOrmService.CriarEtiqueta(nome, categoria);
+                _etiquetaOrmService.CriarEtiqueta(nome, idCategoria);
             }
             catch (Exception exception)
             {
@@ -51,7 +52,6 @@ namespace PWABlog.Controllers.Admin
             }
             return RedirectToAction("Listar");
         }
-
 
         [HttpGet]
         public IActionResult Editar(int id)
@@ -68,17 +68,18 @@ namespace PWABlog.Controllers.Admin
         {
             var id = request.Id;
             var nome = request.Nome;
-            var categoria = request.Categoria;
+            var idCategoria = Convert.ToInt32(request.IdCategoria);
 
             try
             {
-                _etiquetaOrmService.EditarEtiqueta(id, nome, categoria);
+                _etiquetaOrmService.EditarEtiqueta(id, nome, idCategoria);
             }
             catch (Exception exception)
             {
                 TempData["erro-msg"] = exception.Message;
                 return RedirectToAction("Editar", new { id = id });
             }
+
             return RedirectToAction("Listar");
         }
 
@@ -90,6 +91,7 @@ namespace PWABlog.Controllers.Admin
             return View();
 
         }
+
         [HttpPost]
         public RedirectToActionResult Remover(AdminEtiquetasRemoverRequesteModel request)
         {

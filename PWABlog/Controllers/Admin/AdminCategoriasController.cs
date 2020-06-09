@@ -27,7 +27,7 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpGet]
-        public IActionResult Detalhar()
+        public IActionResult Detalhar(int id)
         {
             return View();
         }
@@ -40,7 +40,7 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpPost]
-        public RedirectToActionResult Criar(AdminCategoriasCriarRequestModel request)
+        public RedirectToActionResult Criar(AdminAutoresCriarRequestModel request)
         {
             var nome = request.Nome;
 
@@ -67,7 +67,7 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpPost]
-        public RedirectToActionResult Editar(AdminCategoriasEditarRequestModel request)
+        public RedirectToActionResult Editar(AdminAutoresEditarRequestModel request)
         {
             var id = request.Id;
             var nome = request.Nome;
@@ -94,7 +94,7 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpPost]
-        public RedirectToActionResult Remover(AdminCategoriasRemoverRequesteModel request)
+        public RedirectToActionResult Remover(AdminAutoresRemoverRequesteModel request)
         {
             var id = request.Id;
 

@@ -14,6 +14,10 @@ using PWABlog.Models.Blog.Autor;
 using PWABlog.Models.Blog.Categoria;
 using PWABlog.Models.Blog.Etiqueta;
 using PWABlog.Models.Blog.Postagem;
+using PWABlog.Models.Blog.Postagem.Classificacao;
+using PWABlog.Models.Blog.Postagem.Comentario;
+using PWABlog.Models.Blog.Postagem.Revisao;
+using PWABlog.Models.ControledeAcesso;
 
 namespace PWABlog
 {
@@ -34,7 +38,17 @@ namespace PWABlog
             {
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequiredLength = 6;
-            }).AddEntityFrameworkStores<DatabaseContext>();
+            }).AddEntityFrameworkStores<DatabaseContext>()
+                .AddErrorDescriber<DescritorDeErros>(); 
+
+            // Configurar o mecanismo do controle de acesso
+            services.ConfigureApplicationCookie(options=>
+            {
+                options.LoginPath = "/acesso/login";
+            });
+
+            // Adicionar o serviço do controle de acesso
+            services.AddTransient<ControleDeAcessoService>();
 
             // Adicionar o serviço do banco de dados
             services.AddDbContext<DatabaseContext>();
@@ -44,6 +58,9 @@ namespace PWABlog
             services.AddTransient<PostagemOrmService>();
             services.AddTransient<AutorOrmService>();
             services.AddTransient<EtiquetaOrmService>();
+            services.AddTransient<ClassificacaoOrmService>();
+            services.AddTransient<ComentarioOrmService>();
+            services.AddTransient<RevisaoOrmService>();
 
             // Adicionar os serviços que possibilitam o funcionamento dos controllers e das views
             services.AddControllersWithViews();
@@ -74,13 +91,6 @@ namespace PWABlog
 
             app.UseEndpoints(endpoints =>
             {
-                /*
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
-                );
-                */
-
                 // Rotas da Área Comum
                 endpoints.MapControllerRoute(
                     name: "comum",
@@ -92,12 +102,26 @@ namespace PWABlog
                     }
                 );
 
+                // Rotas do Controle de Acesso
+                endpoints.MapControllerRoute(
+                   name: "controleDeAcesso",
+                   pattern: "acesso/{action}",
+                   defaults: new
+                   {
+                       controller = "ControleDeAcesso",
+                       action = "Login"
+                   }
+               );
+
                 // Rotas da Área Administrativa
                 endpoints.MapControllerRoute(
-                    name: "admin.categorias",
-                    pattern: "admin/categorias/{action}/{id?}",
-                    defaults: new { controller = "AdminCategorias", action = "Listar" }
-                );
+                    name: "admin",
+                    pattern: "admin",
+                    defaults: new 
+                    { 
+                        controller = "Admin",
+                        action = "Painel"
+                    });
 
                 endpoints.MapControllerRoute(
                       name: "admin.categorias",
@@ -123,14 +147,6 @@ namespace PWABlog
                    defaults: new
                    {
                        controller = "AdminPostagem",
-                       action = "Listar"
-                   });
-                endpoints.MapControllerRoute(
-                   name: "admin.revisao",
-                   pattern: "admin/postagem/revisao/{action}/{id?}",
-                   defaults: new
-                   {
-                       controller = "AdminRevisao",
                        action = "Listar"
                    });
             });

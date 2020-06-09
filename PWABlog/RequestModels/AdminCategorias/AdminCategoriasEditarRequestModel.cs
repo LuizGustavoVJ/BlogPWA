@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace PWABlog.RequestModels.AdminCategorias
 {
-    public class AdminCategoriasEditarRequestModel
+    public class AdminAutoresEditarRequestModel
     {
         public int Id { get; set; }
         public string Nome { get; set; }

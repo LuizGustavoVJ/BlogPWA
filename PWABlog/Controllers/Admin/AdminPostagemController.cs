@@ -42,13 +42,14 @@ namespace PWABlog.Controllers.Admin
         {
             var titulo = request.Titulo;
             var descricao = request.Descricao;
-            var autor = request.Autor;
-            var categoria = request.Categoria;
-            var dataPostagem = request.DataPostagem;
+            var idAutor = request.IdAutor;
+            var idCategoria = request.IdCategoria;
+            var texto = request.Texto;
+            var dataPostagem = DateTime.Parse(request.DataPostagem);
 
             try
             {
-                _postagemOrmService.CriarPostagem(titulo, descricao, autor, categoria, dataPostagem);
+                _postagemOrmService.CriarPostagem(titulo, descricao, idAutor, idCategoria, texto, dataPostagem);
             }
             catch (Exception exception)
             {
@@ -57,6 +58,7 @@ namespace PWABlog.Controllers.Admin
             }
             return RedirectToAction("Listar");
         }
+
         [HttpGet]
         public IActionResult Editar(int id)
         {
@@ -71,22 +73,24 @@ namespace PWABlog.Controllers.Admin
         {
             var id = request.Id;
             var titulo = request.Titulo;
+            var texto = request.Texto;
             var descricao = request.Descricao;
-            var autor = request.Autor;
-            var categoria = request.Categoria;
-            var dataPostagem = request.DataPostagem;
+            var idCategoria = Convert.ToInt32(request.IdCategoria);
+            var dataPostagem = DateTime.Parse(request.DataPostagem);
 
             try
             {
-                _postagemOrmService.EditarPostagem(id, titulo, descricao, autor, categoria, dataPostagem);
+                _postagemOrmService.EditarPostagem(id, titulo, descricao, idCategoria, texto, dataPostagem);
             }
             catch (Exception exception)
             {
                 TempData["erro-msg"] = exception.Message;
                 return RedirectToAction("Editar", new { id = id });
             }
+
             return RedirectToAction("Listar");
         }
+
         [HttpGet]
         public IActionResult Remover(int id)
         {
@@ -95,6 +99,7 @@ namespace PWABlog.Controllers.Admin
             return View();
 
         }
+
         [HttpPost]
         public RedirectToActionResult Remover(AdminPostagemRemoverRequestModel request)
         {
