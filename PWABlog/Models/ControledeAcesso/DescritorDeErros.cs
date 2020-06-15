@@ -29,6 +29,20 @@ namespace PWABlog.Models.ControledeAcesso
             return error;
         }
 
+        public override IdentityError PasswordRequiresLower()
+        {
+            var erro = base.PasswordRequiresLower();
+            erro.Description = "A senha precisa de pelo menos um caracter minúsculo";
+            return erro;
+        }
+
+        public override IdentityError PasswordRequiresUpper()
+        {
+            var erro = base.PasswordRequiresUpper();
+            erro.Description = "A senha precisa de pelo menos um caracter maiísculo";
+            return erro;
+        }
+
         public override IdentityError PasswordRequiresNonAlphanumeric()
         {
             var error = base.PasswordRequiresNonAlphanumeric();
@@ -36,12 +50,6 @@ namespace PWABlog.Models.ControledeAcesso
             return error;
         }
 
-        public override IdentityError PasswordRequiresLower()
-        {
-            var erro = base.PasswordRequiresLower();
-            erro.Description = "A senha precisa de pelo menos um caracter minúsculo";
-            return erro;
-        }
     }
 }
 

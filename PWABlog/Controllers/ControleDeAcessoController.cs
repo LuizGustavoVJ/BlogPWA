@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using PWABlog.Models.ControledeAcesso;
 using PWABlog.RequestModels.ControleDeAcesso;
-using PWABlog.ViewModels.ControleDeAcessso;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using PWABlog.ViewModels.ControleDeAcesso;
+
 
 namespace PWABlog.Controllers
 {
@@ -120,7 +120,7 @@ namespace PWABlog.Controllers
             {
                 await _controleDeAcessoService.RegistrarUsuario(email, apelido, senha);
 
-                TempData["registrar-msg"] = "Usuário Registrado!";
+                TempData["registrar-msg"] = "Usuário Registrado com Secesso!";
                 return RedirectToAction("Login");
 
             }

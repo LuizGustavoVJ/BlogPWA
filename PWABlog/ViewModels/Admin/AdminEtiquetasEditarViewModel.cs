@@ -20,6 +20,7 @@ namespace PWABlog.ViewModels.Admin
         public AdminEtiquetasEditarViewModel()
         {
             TituloPagina = "Editar Etiqueta: ";
+
             Categorias = new List<CategoriaAdminEtiquetas>();
         }
     }

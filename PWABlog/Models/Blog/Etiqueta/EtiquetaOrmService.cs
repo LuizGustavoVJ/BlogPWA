@@ -18,7 +18,9 @@ namespace PWABlog.Models.Blog.Etiqueta
 
         public List<EtiquetaEntity> ObterEtiquetas()
         {
-            return _databaseContext.Etiquetas.ToList();
+            return _databaseContext.Etiquetas
+                .Include(e => e.Categoria)
+                .ToList();
         }
 
         public EtiquetaEntity ObterEtiquetaPorId(int idEtiqueta)
@@ -36,6 +38,12 @@ namespace PWABlog.Models.Blog.Etiqueta
 
         public EtiquetaEntity CriarEtiqueta(string nome, int idCategoria)
         {
+            // Verifica a existencia do Nome da Etiqueta
+            if (nome == null)
+            {
+                throw new Exception("O nome para a Etiqueta não foi informado!");
+            }
+
             // Verifica a existencia da Categoria da Etiqueta
             var categoria = _databaseContext.Categorias.Find(idCategoria);
 

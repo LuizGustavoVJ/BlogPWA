@@ -33,11 +33,12 @@ namespace PWABlog
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Adicionar o mecanismo do controle de acesso
+            // Adicionar o mecanismo do controle de acesso (Identity)
             services.AddIdentity<Usuario, Papel>(options=>
             {
                 options.User.RequireUniqueEmail = true;
                 options.Password.RequiredLength = 6;
+
             }).AddEntityFrameworkStores<DatabaseContext>()
                 .AddErrorDescriber<DescritorDeErros>(); 
 
@@ -54,10 +55,10 @@ namespace PWABlog
             services.AddDbContext<DatabaseContext>();
             
             // Adicionar os serviços de ORM das entidades do domínio"
-            services.AddTransient<CategoriaOrmService>();
-            services.AddTransient<PostagemOrmService>();
             services.AddTransient<AutorOrmService>();
+            services.AddTransient<CategoriaOrmService>();
             services.AddTransient<EtiquetaOrmService>();
+            services.AddTransient<PostagemOrmService>();
             services.AddTransient<ClassificacaoOrmService>();
             services.AddTransient<ComentarioOrmService>();
             services.AddTransient<RevisaoOrmService>();
@@ -142,11 +143,11 @@ namespace PWABlog
                    });
 
                 endpoints.MapControllerRoute(
-                   name: "admin.postagem",
-                   pattern: "admin/postagem/{action}/{id?}",
+                   name: "admin.postagens",
+                   pattern: "admin/postagens/{action}/{id?}",
                    defaults: new
                    {
-                       controller = "AdminPostagem",
+                       controller = "AdminPostagens",
                        action = "Listar"
                    });
             });

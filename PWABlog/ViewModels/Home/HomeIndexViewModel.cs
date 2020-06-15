@@ -16,7 +16,7 @@ namespace PWABlog.ViewModels.Home
         
         public HomeIndexViewModel()
         {
-            TituloPagina = "Blog PWA";
+            TituloPagina = "Blog do LG";
             Postagens = new List<PostagemHomeIndex>();
             Categorias = new List<CategoriaHomeIndex>();
             Etiquetas = new List<EtiquetaHomeIndex>();

@@ -14,6 +14,7 @@ namespace PWABlog.ViewModels.Admin
         public AdminEtiquetasCriarViewModel()
         {
             TituloPagina = "Criar nova Etiqueta";
+
             Categorias = new List<CategoriaAdminEtiquetas>();
         }
     }
@@ -21,6 +22,7 @@ namespace PWABlog.ViewModels.Admin
     public class CategoriaAdminEtiquetas
     {
         public int IdCategoria { get; set; }
+
         public string NomeCategoria { get; set; }
     }
 }
