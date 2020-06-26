@@ -20,6 +20,8 @@
                 <tr>
                     <th>Id</th>
                     <th>Nome</th>
+                    <th>Etiquetas</th>
+                    <th>Postagens</th>
                     <th>Ações</th>
                 </tr>
             </thead>
@@ -27,14 +29,16 @@
             <tbody>
                 @foreach (CategoriaAdminCategorias categoria in @Model.Categorias)
                 {
-                    <tr>
-                        <td>@categoria.Id</td>
-                        <td>@categoria.Nome</td>
-                        <td>
-                            <a class="btn btn-default btn-xs" href="/admin/etiquetas/editar/@categoria.Id">Editar</a>
-                            <a class="btn btn-danger btn-xs" href="/admin/etiquetas/remover/@categoria.Id">Remover</a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>@categoria.Id</td>
+                    <td>@categoria.Nome</td>
+                    <td>@categoria.NomeEtiqueta</td>
+                    <td>@categoria.NomePostagem</td>
+                    <td>
+                        <a class="btn btn-default btn-xs" href="/admin/categorias/editar/@categoria.Id">Editar</a>
+                        <a class="btn btn-danger btn-xs" href="/admin/categorias/remover/@categoria.Id">Remover</a>
+                    </td>
+                </tr>
                 }
             </tbody>
         </table>

@@ -3,7 +3,7 @@
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Edição da Categoria</h3>
+        <h3 class="card-title">Edição de categorias</h3>
 
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -27,7 +27,41 @@
                 <input id="Nome" name="Nome" type="text" class="form-control" value="@Model.NomeCategoria">
             </div>
 
-        
+            <div class="form-group mb-3">
+                <label for="IdEtiquetas">Etiquetas</label>
+                <select id="IdEtiquetas" name="IdEtiquetas" class="form-control">
+                    <option value="">Selecione</option>
+                        @foreach (EtiquetasAdminCategorias etiquetas in Model.Etiquetas)
+                        {
+                            @if (@Model.IdEtiquetaCategoria == etiquetas.IdEtiqueta)
+                            {
+                                <option selected value="@etiquetas.IdEtiqueta">@etiquetas.NomeEtiqueta</option>
+                            }
+                            else
+                            {
+                                <option value="@etiquetas.IdEtiqueta">@etiquetas.NomeEtiqueta</option>
+                            }
+                        }
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <label for="IdPostagens">Postagem</label>
+                <select id="IdPostagens" name="IdPostagens" class="form-control">
+                    <option value="">Selecione</option>
+                        @foreach (PostagensAdminCategorias postagens in Model.Postagens)
+                        {
+                            @if (@Model.IdPostagensCategoria == postagens.IdPostagens)
+                            {
+                                <option selected value="@postagens.IdPostagens">@postagens.NomePostagens</option>
+                            }
+                            else
+                            {
+                                <option value="@postagens.IdPostagens">@postagens.NomePostagens</option>
+                            }
+                        }
+                </select>
+            </div>
+
             <div class="form-group mb-3">
                 <input type="hidden" name="Id" value="@Model.IdCategoria">
                 <button type="submit" class="btn btn-primary btn-block">Confirmar</button>

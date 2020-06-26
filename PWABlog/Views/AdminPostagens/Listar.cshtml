@@ -1,8 +1,9 @@
-﻿@model PWABlog.ViewModels.Admin.AdminPostagensListarViewModel
+﻿@using PWABlog.ViewModels.Admin
+@model PWABlog.ViewModels.Admin.AdminPostagensListarViewModel
 
 <div class="card">
     <div class="card-header">
-        <h3 class="card-title">Listagem de Postagens</h3>
+        <h3 class="card-title">Lista de Postagens</h3>
 
         <div class="card-tools">
             <button type="button" class="btn btn-tool" data-card-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -10,7 +11,36 @@
             </button>
         </div>
     </div>
+
     <div class="card-body">
-        Conteúdo qualquer do painel
+        <a class="btn btn-primary" href="~/admin/postagens/criar">Criar nova Postagem</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Autor</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (PostagemAdminPostagens postagens in @Model.Postagens)
+                {
+                    <tr>
+                        <td>@postagens.IdPostagem</td>
+                        <td>@postagens.NomePostagem</td>
+                        <td>@postagens.NomeCategoria</td>
+                        <td>@postagens.NomeAutor</td>
+
+                        <td>
+                            <a class="btn btn-default btn-xs" href="/admin/postagens/editar/@postagens.IdPostagem">Editar</a>
+                            <a class="btn btn-danger btn-xs" href="/admin/postagens/remover/@postagens.IdPostagem">Remover</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

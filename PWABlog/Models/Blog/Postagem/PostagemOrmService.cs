@@ -14,7 +14,6 @@ namespace PWABlog.Models.Blog.Postagem
 
         private readonly RevisaoOrmService _revisaoOrmService;
 
-
         public PostagemOrmService(
             DatabaseContext databaseContext,
             RevisaoOrmService revisaoOrmService
@@ -22,6 +21,40 @@ namespace PWABlog.Models.Blog.Postagem
         {
             _databaseContext = databaseContext;
             _revisaoOrmService = revisaoOrmService;
+        }
+
+        public PostagemEntity CriarPostagem(string titulo, string descricao, int idAutor, int idCategoria, string texto, DateTime dataPostagem)
+        {
+            // Verificar existência do Autor da Postagem
+            var autor = _databaseContext.Autores.Find(idAutor);
+            if (autor == null)
+            {
+                throw new Exception("O Autor informado para a Postagem não foi encontrado!");
+            }
+
+            // Verificar existência da Categoria da Postagem
+            var categoria = _databaseContext.Categorias.Find(idCategoria);
+            if (categoria == null)
+            {
+                throw new Exception("A Categoria informada para a Postagem não foi encontrada!");
+            }
+
+            // Criar nova Postagem
+            var novaPostagem = new PostagemEntity
+            {
+                Titulo = titulo,
+                Descricao = descricao,
+                Autor = autor,
+                Categoria = categoria,
+                DataPostagem = dataPostagem
+            };
+            _databaseContext.Postagens.Add(novaPostagem);
+            _databaseContext.SaveChanges();
+
+            // Criar a Revisão para a Postagem
+            _revisaoOrmService.CriarRevisao(novaPostagem.Id, texto);
+
+            return novaPostagem;
         }
 
         public List<PostagemEntity> ObterPostagens()
@@ -34,6 +67,13 @@ namespace PWABlog.Models.Blog.Postagem
         
         }
 
+        public PostagemEntity ObterPostagemPorId(int idPostagem)
+        {
+            var postagem = _databaseContext.Postagens.Find(idPostagem);
+
+            return postagem;
+        }
+
         public List<PostagemEntity> ObterPostagensPopulares()
         {
             return _databaseContext.Postagens
@@ -43,77 +83,30 @@ namespace PWABlog.Models.Blog.Postagem
                 .ToList();
         }
 
-        public PostagemEntity ObterPostagemPorId(int idPostagem)
+        public PostagemEntity EditarPostagem(int id, string titulo, string descricao, int idCategoria, string texto, DateTime dataPostagem)
         {
-            var postagem = _databaseContext.Postagens.Find(idPostagem);
-
-            return postagem;
-        }
-
-        public PostagemEntity CriarPostagem(string titulo, string descricao, int idAutor, int idCategoria, string texto, DateTime dataPostagem)
-        {
-            // Verifica a existencia do Autor da Postagem
-            var autor =_databaseContext.Autores.Find(idAutor);
-
-            if (autor == null)
-            {
-                throw new Exception("O Autor informado para a postagem não foi encontrado!");
-            }
-
-            // Verifica a existencia da Categoria da Postagem
-            var categoria = _databaseContext.Categorias.Find(idCategoria);
-
-            if (categoria == null)
-            {
-                throw new Exception("A Categpria informada para a postagem não foi encontrada!");
-            }
-
-            // criar nova Postagem
-            var novaPostagem = new PostagemEntity
-            { 
-                Titulo = titulo,
-                Descricao = descricao,
-                Autor = autor,
-                Categoria = categoria,
-                DataPostagem = dataPostagem
-            };
-
-            _databaseContext.Postagens.Add(novaPostagem);
-            _databaseContext.SaveChanges();
-
-            // Cria a Revisão para a postagen
-            _revisaoOrmService.CriarRevisao(novaPostagem.Id, texto);
-
-            return novaPostagem;
-        }
-
-        public PostagemEntity EditarPostagem(int id, string titulo, string descricao, int IdCategoria, string texto, DateTime dataPostagem)
-        {
-            // Obter postagem para edição
+            // Obter Postagem a Editar
             var postagem = _databaseContext.Postagens.Find(id);
-
             if (postagem == null)
             {
-                throw new Exception("Postagem não encontrada");
+                throw new Exception("Postagem não encontrada!");
             }
 
-            // Verifica a existencia da Categoria da postagem
-            var categoria = _databaseContext.Categorias.Find(IdCategoria);
-
+            // Verificar existência da Categoria da Postagem
+            var categoria = _databaseContext.Categorias.Find(idCategoria);
             if (categoria == null)
             {
-                throw new Exception("Categoria não encontrada");
+                throw new Exception("A Categoria informada para a Postagem não foi encontrada!");
             }
 
-            // Atualizar dados da postagem
+            // Atualizar dados da Postagem
             postagem.Titulo = titulo;
             postagem.Descricao = descricao;
             postagem.Categoria = categoria;
             postagem.DataPostagem = dataPostagem;
-
             _databaseContext.SaveChanges();
 
-            // Cria a Revisão para a postagen
+            // Criar nova Revisão para a Postagem
             _revisaoOrmService.CriarRevisao(postagem.Id, texto);
 
             return postagem;
@@ -121,17 +114,18 @@ namespace PWABlog.Models.Blog.Postagem
 
         public bool RemoverPostagem(int id)
         {
+            // Obter Postagem a Remover
             var postagem = _databaseContext.Postagens.Find(id);
-
             if (postagem == null)
             {
-                throw new Exception("Postagem não encontrada");
+                throw new Exception("Postagem não encontrada!");
             }
+
+            // Remover Postagem
             _databaseContext.Postagens.Remove(postagem);
             _databaseContext.SaveChanges();
 
             return true;
         }
-
     }
 }

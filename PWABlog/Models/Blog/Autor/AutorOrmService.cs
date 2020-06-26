@@ -18,43 +18,41 @@ namespace PWABlog.Models.Blog.Autor
         public List<AutorEntity> ObterAutores()
         {
             return _databaseContext.Autores.ToList();
-
         }
 
-        public AutorEntity ObterAutorPorId(int idAutor)
+        public AutorEntity ObterAutorPorId(int AutorId)
         {
-            var autores = _databaseContext.Autores.Find(idAutor);
+            var autor = _databaseContext.Autores.Find(AutorId);
 
-            return autores;
+            return autor;
         }
 
-        public List<AutorEntity> PesquisarAutorPorNome(string nomeAutor)
+        public List<AutorEntity> PesquisarAutoresPorNome(string nomeAutor)
         {
             return _databaseContext.Autores.Where(c => c.Nome.Contains(nomeAutor)).ToList();
-
         }
 
         public AutorEntity CriarAutor(string nome)
         {
+            // Criar novo Autor
             var novoAutor = new AutorEntity { Nome = nome };
             _databaseContext.Autores.Add(novoAutor);
             _databaseContext.SaveChanges();
 
             return novoAutor;
-
         }
 
         public AutorEntity EditarAutor(int id, string nome)
         {
-            // obter o autor para edição
+            // Obter Autor a Editar
             var autor = _databaseContext.Autores.Find(id);
 
             if (autor == null)
             {
-                throw new Exception("Autor não encontrado");
+                throw new Exception("Autor não encontrado!");
             }
 
-            // Atualizar os dados do autor
+            // Atualizar dados do Autor
             autor.Nome = nome;
             _databaseContext.SaveChanges();
 
@@ -63,20 +61,19 @@ namespace PWABlog.Models.Blog.Autor
 
         public bool RemoverAutor(int id)
         {
-            // obter o autor para remoção
+            // Obter Autor a Remover
             var autor = _databaseContext.Autores.Find(id);
 
             if (autor == null)
             {
-                throw new Exception("Autor não encontrado");
+                throw new Exception("Autor não encontrado!");
             }
 
-            // Remover o autor
+            // Remover Autor
             _databaseContext.Autores.Remove(autor);
             _databaseContext.SaveChanges();
 
             return true;
-
         }
     }
 }

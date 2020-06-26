@@ -24,5 +24,7 @@ namespace PWABlog.ViewModels.Admin
         public string Nome { get; set; }
 
         public string NomeEtiqueta { get; set; }
+
+        public string NomePostagem { get; set; }
     }
 }

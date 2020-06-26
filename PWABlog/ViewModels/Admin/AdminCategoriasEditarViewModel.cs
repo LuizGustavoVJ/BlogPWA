@@ -11,15 +11,22 @@ namespace PWABlog.ViewModels.Admin
 
         public string NomeCategoria { get; set; }
 
+        public int IdEtiquetaCategoria { get; set; }
+
+        public int IdPostagensCategoria { get; set; }
+
         public string Erro { get; set; }
 
-        public ICollection<CategoriaAdminCategorias> Categorias { get; set; }
+        public ICollection<EtiquetasAdminCategorias> Etiquetas { get; set; }
+
+        public ICollection<PostagensAdminCategorias> Postagens { get; set; }
+
 
         public AdminCategoriasEditarViewModel()
         {
-            TituloPagina = "Editar Categoria: ";
-
-            Categorias = new List<CategoriaAdminCategorias>();
+            TituloPagina = "Criar novaCategoria";
+            Etiquetas = new List<EtiquetasAdminCategorias>();
+            Postagens = new List<PostagensAdminCategorias>();
         }
     }
 }

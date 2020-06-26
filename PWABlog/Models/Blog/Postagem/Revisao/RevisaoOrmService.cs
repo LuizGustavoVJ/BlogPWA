@@ -82,7 +82,6 @@ namespace PWABlog.Models.Blog.Postagem.Revisao
             _databaseContext.SaveChanges();
 
             return true;
-
         }
     }
 }

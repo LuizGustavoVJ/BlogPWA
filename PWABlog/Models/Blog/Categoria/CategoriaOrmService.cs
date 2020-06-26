@@ -17,7 +17,9 @@ namespace PWABlog.Models.Blog.Categoria
 
         public List<CategoriaEntity> ObterCategorias()
         {
-            return _databaseContext.Categorias.ToList();
+            return _databaseContext.Categorias
+                .Include(c => c.Etiquetas)
+                .ToList();
         }
 
         public CategoriaEntity ObterCategoriaPorId(int idCategoria)

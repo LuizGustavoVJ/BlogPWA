@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PWABlog.Models.Blog.Autor;
+using PWABlog.Models.Blog.Categoria;
 using PWABlog.Models.Blog.Postagem;
 using PWABlog.RequestModels.AdminPostagens;
 using PWABlog.ViewModels.Admin;
@@ -11,18 +13,41 @@ namespace PWABlog.Controllers.Admin
     public class AdminPostagensController : Controller
     {
         private readonly PostagemOrmService _postagemOrmService;
+        private readonly CategoriaOrmService _categoriaOrmService;
+        private readonly AutorOrmService _autoresOrmService;
 
         public AdminPostagensController(
-            PostagemOrmService postagemOrmService
+            PostagemOrmService postagemOrmService,
+            AutorOrmService autoresOrmService,
+             CategoriaOrmService categoriaOrmService
         )
         {
             _postagemOrmService = postagemOrmService;
+            _autoresOrmService = autoresOrmService;
+            _categoriaOrmService = categoriaOrmService;
         }
 
         [HttpGet]
         public IActionResult Listar()
         {
             AdminPostagensListarViewModel model = new AdminPostagensListarViewModel();
+
+            //Obter as Postagens
+            var listarPostagens = _postagemOrmService.ObterPostagens();
+
+            //Alimentar a model com as postagens que serão Listadas
+            foreach (var postagemEntity in listarPostagens)
+            {
+                var postagemAdminPostagens = new PostagemAdminPostagens();
+                postagemAdminPostagens.IdPostagem = postagemEntity.Id;
+                postagemAdminPostagens.NomePostagem = postagemEntity.Descricao;
+                postagemAdminPostagens.NomeAutor = postagemEntity.Autor.Nome;
+                postagemAdminPostagens.NomeCategoria = postagemEntity.Categoria.Nome;
+                postagemAdminPostagens.DataPostagem = postagemEntity.DataPostagem;
+
+                model.Postagens.Add(postagemAdminPostagens);
+
+            }
 
             return View(model);
         }
@@ -36,18 +61,46 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Criar()
         {
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensCriarViewModel model = new AdminPostagensCriarViewModel();
 
-            return View();
+            model.Erro = (string)TempData["erro-msg"];
+
+            //Obter Categorias
+            var listaCategorias = _categoriaOrmService.ObterCategorias();
+
+            //Alimentar o model com as categorias que serão colocadas no select
+            foreach (var categoriaEntity in listaCategorias)
+            {
+                var categoriaAdminPostagens = new CategoriaAdminPostagens();
+                categoriaAdminPostagens.IdCategorias = categoriaEntity.Id;
+                categoriaAdminPostagens.NomeCategorias = categoriaEntity.Nome;
+
+                model.Categorias.Add(categoriaAdminPostagens);
+            }
+
+            //Obter Autores
+            var listaAutores = _autoresOrmService.ObterAutores();
+
+            //Alimentar o model com os autores que serão colocadas no select
+            foreach (var autorEntity in listaAutores)
+            {
+                var autorAdminPostagens = new AutorAdminPostagens();
+                autorAdminPostagens.IdAutores = autorEntity.Id;
+                autorAdminPostagens.NomeAutores = autorEntity.Nome;
+
+                model.Autores.Add(autorAdminPostagens);
+            }
+
+            return View(model);
         }
 
         [HttpPost]
         public RedirectToActionResult Criar(AdminPostagensCriarRequestModel request)
         {
-            var titulo = request.Texto;
+            var titulo = request.Titulo;
             var descricao = request.Descricao;
-            var idAutor = request.IdAutor;
-            var idCategoria = request.IdCategoria;
+            var idAutor = request.idAutor;
+            var idCategoria = request.idCategoria;
             var texto = request.Texto;
             var dataPostagem = DateTime.Parse(request.DataPostagem);
 
@@ -67,10 +120,52 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Editar(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensEditarViewModel model = new AdminPostagensEditarViewModel();
 
-            return View();
+            // Obter etiqueta a editar
+            var postagemEditar = _postagemOrmService.ObterPostagemPorId(id);
+            if (postagemEditar == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            // Definir possível erro de processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
+
+            // Obter as Categorias
+            var listaCategorias = _categoriaOrmService.ObterCategorias();
+
+            // Alimentar o model com as categorias que serão colocadas no <select> do formulário
+            foreach (var categoriaEntity in listaCategorias)
+            {
+                var categoriaAdminPostagem = new CategoriaAdminPostagens();
+                categoriaAdminPostagem.IdCategorias = categoriaEntity.Id;
+                categoriaAdminPostagem.NomeCategorias = categoriaEntity.Nome;
+
+                model.Categorias.Add(categoriaAdminPostagem);
+            }
+
+            //Obter Autores
+            var listaAutores = _autoresOrmService.ObterAutores();
+
+            //Alimentar o model com os autores que serão colocadas no select
+            foreach (var autorEntity in listaAutores)
+            {
+                var autorAdminPostagens = new AutorAdminPostagens();
+                autorAdminPostagens.IdAutores = autorEntity.Id;
+                autorAdminPostagens.NomeAutores = autorEntity.Nome;
+
+                model.Autores.Add(autorAdminPostagens);
+            }
+
+            // Alimentar o model com os dados da etiqueta a ser editada
+            model.IdPostagem = postagemEditar.Id;
+            model.NomePostagem = postagemEditar.Descricao;
+            model.IdAutorPostagem = postagemEditar.Autor.Id;
+            model.IdCategoriaPostagem = postagemEditar.Categoria.Id;
+            model.TituloPagina += model.NomePostagem;
+
+            return View(model);
         }
 
         [HttpPost]
@@ -79,13 +174,13 @@ namespace PWABlog.Controllers.Admin
             var id = request.Id;
             var titulo = request.Texto;
             var descricao = request.Descricao;
-            var idCategoria = Convert.ToInt32(request.IdCategoria);
+            var CategoriaId = Convert.ToInt32(request.CategoriaId);
             var texto = request.Texto;
-            var dataPostagem= DateTime.Parse(request.DataPostagem);
+            var dataExibicao = DateTime.Parse(request.DataPostagem);
 
             try
             {
-                _postagemOrmService.EditarPostagem(id, titulo, descricao, idCategoria, texto, dataPostagem);
+                _postagemOrmService.EditarPostagem(id, titulo, descricao, CategoriaId, texto, dataExibicao);
             }
             catch (Exception exception)
             {
@@ -99,10 +194,24 @@ namespace PWABlog.Controllers.Admin
         [HttpGet]
         public IActionResult Remover(int id)
         {
-            ViewBag.id = id;
-            ViewBag.erro = TempData["erro-msg"];
+            AdminPostagensRemoverViewModel model = new AdminPostagensRemoverViewModel();
 
-            return View();
+            // Obter etiqueta a remover
+            var postagemRemover = _postagemOrmService.ObterPostagemPorId(id);
+            if (postagemRemover == null)
+            {
+                return RedirectToAction("Listar");
+            }
+
+            // Definir possível erro de processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
+
+            // Alimentar o model com os dados da etiqueta a ser editada
+            model.IdPostagem = postagemRemover.Id;
+            model.NomePostagem = postagemRemover.Descricao;
+            model.TituloPagina += model.NomePostagem;
+
+            return View(model);
         }
 
         [HttpPost]
