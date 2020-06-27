@@ -13,11 +13,14 @@ namespace PWABlog.ViewModels.Admin
 
         public ICollection<CategoriaAdminPostagens> Categorias { get; set; }
 
+        public ICollection<EtiquetaAdminPostagens> Etiquetas { get; set; }
+
         public AdminPostagensCriarViewModel()
         {
             TituloPagina = "Criar nova Etiqueta";
             Categorias = new List<CategoriaAdminPostagens>();
             Autores = new List<AutorAdminPostagens>();
+            Etiquetas = new List<EtiquetaAdminPostagens>();
         }
 
     }
@@ -32,5 +35,11 @@ namespace PWABlog.ViewModels.Admin
     {
         public int IdAutores { get; set; }
         public string NomeAutores { get; set; }
+    }
+
+    public class EtiquetaAdminPostagens
+    {
+        public int IdEtiqueta { get; set; }
+        public string NomeEtiqueta { get; set; }
     }
 }

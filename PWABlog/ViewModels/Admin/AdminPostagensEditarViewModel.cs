@@ -23,11 +23,14 @@ namespace PWABlog.ViewModels.Admin
 
         public ICollection<AutorAdminPostagens> Autores { get; set; }
 
+        public ICollection<EtiquetaAdminPostagens> Etiquetas { get; set; }
+
         public AdminPostagensEditarViewModel()
         {
             TituloPagina = "Criar nova Postagem";
             Categorias = new List<CategoriaAdminPostagens>();
             Autores = new List<AutorAdminPostagens>();
+            Etiquetas = new List<EtiquetaAdminPostagens>();
         }
     }
 }

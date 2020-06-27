@@ -75,12 +75,29 @@
             </div>
 
             <div class="form-group mb-3">
+                <label for="idEtiqueta">Etiquetas:</label>
+                <select id="IdEtiqueta" name="IdEtiqueta" class="form-control">
+                    <option value="">Selecione</option>
+                    @foreach (EtiquetaAdminPostagens etiqueta in @Model.Etiquetas)
+                    {
+                        <option value="@etiqueta.IdEtiqueta">@etiqueta.NomeEtiqueta</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="Texto">Texo:</label>
+                <textarea name="Texto" id="Texto" cols="30" rows="10" style="width:100%;"></textarea>
+            </div>
+
+            <div class="form-group mb-3">
                 <input type="hidden" name="Id" value="@Model.IdPostagem">
                 <button type="submit" class="btn btn-primary btn-block">Confirmar</button>
                 <p class="text-center mt-3">
                     <a href="/admin/postagens">Cancelar</a>
                 </p>
             </div>
+
         </form>
     </div>
 </div>

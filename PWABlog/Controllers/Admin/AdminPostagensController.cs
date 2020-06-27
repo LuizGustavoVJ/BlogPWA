@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PWABlog.Models.Blog.Autor;
 using PWABlog.Models.Blog.Categoria;
+using PWABlog.Models.Blog.Etiqueta;
 using PWABlog.Models.Blog.Postagem;
 using PWABlog.RequestModels.AdminPostagens;
 using PWABlog.ViewModels.Admin;
@@ -15,16 +16,19 @@ namespace PWABlog.Controllers.Admin
         private readonly PostagemOrmService _postagemOrmService;
         private readonly CategoriaOrmService _categoriaOrmService;
         private readonly AutorOrmService _autoresOrmService;
+        private readonly EtiquetaOrmService _etiquetaOrmService;
 
         public AdminPostagensController(
             PostagemOrmService postagemOrmService,
             AutorOrmService autoresOrmService,
-             CategoriaOrmService categoriaOrmService
+             CategoriaOrmService categoriaOrmService,
+             EtiquetaOrmService etiquetaOrmService
         )
         {
             _postagemOrmService = postagemOrmService;
             _autoresOrmService = autoresOrmService;
             _categoriaOrmService = categoriaOrmService;
+            _etiquetaOrmService = etiquetaOrmService;
         }
 
         [HttpGet]
@@ -63,25 +67,26 @@ namespace PWABlog.Controllers.Admin
         {
             AdminPostagensCriarViewModel model = new AdminPostagensCriarViewModel();
 
+            ViewBag.erro = TempData["erro-msg"];
             model.Erro = (string)TempData["erro-msg"];
 
-            //Obter Categorias
+            // Obter categoria da postagem
             var listaCategorias = _categoriaOrmService.ObterCategorias();
 
-            //Alimentar o model com as categorias que serão colocadas no select
+            // Alimentar o model com as categorias que serão colocadas no <select> do formulário
             foreach (var categoriaEntity in listaCategorias)
             {
-                var categoriaAdminPostagens = new CategoriaAdminPostagens();
-                categoriaAdminPostagens.IdCategorias = categoriaEntity.Id;
-                categoriaAdminPostagens.NomeCategorias = categoriaEntity.Nome;
+                var categoriaAdmPostagens = new CategoriaAdminPostagens();
+                categoriaAdmPostagens.IdCategorias = categoriaEntity.Id;
+                categoriaAdmPostagens.NomeCategorias = categoriaEntity.Nome;
 
-                model.Categorias.Add(categoriaAdminPostagens);
+                model.Categorias.Add(categoriaAdmPostagens);
             }
 
-            //Obter Autores
+            // Obter autor da postagem
             var listaAutores = _autoresOrmService.ObterAutores();
 
-            //Alimentar o model com os autores que serão colocadas no select
+            // Alimentar o model com os autores que serão colocadas no <select> do formulário
             foreach (var autorEntity in listaAutores)
             {
                 var autorAdminPostagens = new AutorAdminPostagens();
@@ -89,6 +94,19 @@ namespace PWABlog.Controllers.Admin
                 autorAdminPostagens.NomeAutores = autorEntity.Nome;
 
                 model.Autores.Add(autorAdminPostagens);
+            }
+
+            // Obter etiqueta da postagem
+            var listaEtiquetas = _etiquetaOrmService.ObterEtiquetas();
+
+            // Alimentar o model com as etiquetas que serão colocadas no <select> do formulário
+            foreach (var etiquetaEntity in listaEtiquetas)
+            {
+                var etiquetaAdminPostagens = new EtiquetaAdminPostagens();
+                etiquetaAdminPostagens.IdEtiqueta = etiquetaEntity.Id;
+                etiquetaAdminPostagens.NomeEtiqueta = etiquetaEntity.Nome;
+
+                model.Etiquetas.Add(etiquetaAdminPostagens);
             }
 
             return View(model);
@@ -121,6 +139,9 @@ namespace PWABlog.Controllers.Admin
         public IActionResult Editar(int id)
         {
             AdminPostagensEditarViewModel model = new AdminPostagensEditarViewModel();
+                       
+            // Definir possível erro de processamento (vindo do post do criar)
+            model.Erro = (string)TempData["erro-msg"];
 
             // Obter etiqueta a editar
             var postagemEditar = _postagemOrmService.ObterPostagemPorId(id);
@@ -128,9 +149,6 @@ namespace PWABlog.Controllers.Admin
             {
                 return RedirectToAction("Listar");
             }
-
-            // Definir possível erro de processamento (vindo do post do criar)
-            model.Erro = (string)TempData["erro-msg"];
 
             // Obter as Categorias
             var listaCategorias = _categoriaOrmService.ObterCategorias();

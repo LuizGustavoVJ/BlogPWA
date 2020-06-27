@@ -63,6 +63,7 @@ namespace PWABlog.Models.Blog.Postagem
                 .Include(p => p.Categoria)
                 .Include(p => p.Revisoes)
                 .Include(p => p.Comentarios)
+                .Include(p => p.Autor)
                 .ToList();
         
         }

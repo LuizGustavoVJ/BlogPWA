@@ -99,7 +99,6 @@ namespace PWABlog.Controllers.Admin
             model.TituloPagina += model.Nome;
 
             return View(model);
-
         }
 
         [HttpPost]
@@ -138,6 +137,7 @@ namespace PWABlog.Controllers.Admin
             // Alimentar o model com os dados da etiqueta a ser editada
             model.Id = autorRemover.Id;
             model.Nome = autorRemover.Nome;
+            model.TituloPagina += model.Nome;
 
             return View();
         }
