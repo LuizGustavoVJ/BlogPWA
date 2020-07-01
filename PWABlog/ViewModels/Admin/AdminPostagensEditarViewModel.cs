@@ -19,6 +19,8 @@ namespace PWABlog.ViewModels.Admin
 
         public int IdAutorPostagem { get; set; }
 
+        public int IdEtiquetaPostagem { get; set; }
+
         public ICollection<CategoriaAdminPostagens> Categorias { get; set; }
 
         public ICollection<AutorAdminPostagens> Autores { get; set; }

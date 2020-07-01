@@ -26,6 +26,8 @@ namespace PWABlog.ViewModels.Admin
 
         public string NomeAutor { get; set; }
 
+        public string NomeEtiqueta { get; set; }
+
         public string Versao { get; set; }
     }
 }

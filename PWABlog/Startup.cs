@@ -125,6 +125,15 @@ namespace PWABlog
                     });
 
                 endpoints.MapControllerRoute(
+                name: "admin.autores",
+                pattern: "admin/autores/{action}/{id?}",
+                defaults: new
+                {
+                   controller = "AdminAutores",
+                   action = "Listar"
+               });
+
+                endpoints.MapControllerRoute(
                       name: "admin.categorias",
                       pattern: "admin/categorias/{action}/{id?}",
                       defaults: new
@@ -150,6 +159,15 @@ namespace PWABlog
                        controller = "AdminPostagens",
                        action = "Listar"
                    });
+
+                endpoints.MapControllerRoute(
+                  name: "admin.revisao",
+                  pattern: "admin/postagem/revisao/{action}/{id?}",
+                  defaults: new
+                  {
+                      controller = "AdminRevisao",
+                      action = "Listar"
+                  });
             });
         }
     }

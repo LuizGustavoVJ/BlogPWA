@@ -17,7 +17,7 @@ namespace PWABlog.ViewModels.Admin
 
         public AdminAutoresEditarViewModel()
         {
-            TituloPagina = "Editar Autor";
+            TituloPagina = "Editar Autor: ";
 
             Autores = new List<AdminAutoresEditarViewModel>();
         }

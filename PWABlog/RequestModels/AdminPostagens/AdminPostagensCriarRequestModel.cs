@@ -22,5 +22,6 @@ namespace PWABlog.RequestModels.AdminPostagens
         public string Descricao { get; set; }
 
         public string Texto { get; set; }
+
     }
 }

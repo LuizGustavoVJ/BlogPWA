@@ -46,7 +46,6 @@ namespace PWABlog.Models.Blog.Autor
         {
             // Obter Autor a Editar
             var autor = _databaseContext.Autores.Find(id);
-
             if (autor == null)
             {
                 throw new Exception("Autor não encontrado!");

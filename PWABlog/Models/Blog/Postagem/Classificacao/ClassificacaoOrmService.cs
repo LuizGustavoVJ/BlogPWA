@@ -22,19 +22,57 @@ namespace PWABlog.Models.Blog.Postagem.Classificacao
             return classificacao;
         }
 
-        //public ClassificacaoEntity CriarClassificacao(int idPostagem, bool classsificacaoDada)
-        //{
-        //    return "";
-        //}
+        public ClassificacaoEntity CriarClassificacao(int idPostagem, bool classificacaoDada)
+        {
+            // Verificar existência da Postagem da Classificação
+            var postagem = _databaseContext.Postagens.Find(idPostagem);
+            if (postagem == null)
+            {
+                throw new Exception("A Postagem informada para a Classificação não foi encontrada!");
+            }
 
-        //public ClassificacaoEntity EditarClasssificacao(int id, bool classsificacaoDada)
-        //{
+            // Criar nova Classificação
+            var novaClassificacao = new ClassificacaoEntity()
+            {
+                Postagem = postagem,
+                Classificacao = classificacaoDada
+            };
+            _databaseContext.Classificacoes.Add(novaClassificacao);
+            _databaseContext.SaveChanges();
 
-        //}
+            return novaClassificacao;
+        }
 
-        //public ClassificacaoEntity RemoverClasssificacao(int id, bool classsificacaoDada)
-        //{
+        public ClassificacaoEntity EditarEtiqueta(int id, bool classificacaoDada)
+        {
+            // Obter Classificação a Editar
+            var classificacao = _databaseContext.Classificacoes.Find(id);
+            if (classificacao == null)
+            {
+                throw new Exception("Classificação não encontrada!");
+            }
 
-        //}
+            // Atualizar dados da Classificação
+            classificacao.Classificacao = classificacaoDada;
+            _databaseContext.SaveChanges();
+
+            return classificacao;
+        }
+
+        public bool RemoverClassificacao(int id)
+        {
+            // Obter Classificação a Remover
+            var classificacao = _databaseContext.Classificacoes.Find(id);
+            if (classificacao == null)
+            {
+                throw new Exception("Classificação não encontrada!");
+            }
+
+            // Remover Classificação
+            _databaseContext.Classificacoes.Remove(classificacao);
+            _databaseContext.SaveChanges();
+
+            return true;
+        }
     }
 }

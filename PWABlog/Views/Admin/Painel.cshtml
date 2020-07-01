@@ -1,4 +1,5 @@
-﻿@model PWABlog.ViewModels.Admin.AdminPainelViewModel
+﻿@using PWABlog.ViewModels.Admin
+@model PWABlog.ViewModels.Admin.AdminPainelViewModel
 
 <div class="card">
     <div class="card-header">
@@ -10,7 +11,29 @@
             </button>
         </div>
     </div>
+
     <div class="card-body">
-        Conteúdo qualquer do painel
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Autores</th>
+                    <th>Categorias</th>
+                    <th>Etiquetas</th>
+                    <th>Postagens</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (PainelAdminPainel postagens in @Model.Postagens)
+                {
+                <tr>
+                    <td>@postagens.NomeAutor.Count()</td>
+                    <td>@postagens.NomeCategoria.Count()</td>
+                    <td>@postagens.NomeEtiqueta.Count()</td>
+                    <td>@postagens.NomePostagem.Count()</td>>
+                </tr>
+                }
+            </tbody>
+        </table>
     </div>
 </div>

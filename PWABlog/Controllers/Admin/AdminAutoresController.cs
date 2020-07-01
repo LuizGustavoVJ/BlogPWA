@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PWABlog.Models.Blog.Autor;
 using PWABlog.RequestModels.AdminAutores;
 using PWABlog.ViewModels.Admin;
+using static PWABlog.ViewModels.Admin.AdminAutoresListarViewModel;
 
 namespace PWABlog.Controllers.Admin
 {
@@ -18,8 +19,6 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpGet]
-        [Route("admin/autores")]
-        [Route("admin/autores/listar")]
         public IActionResult Listar()
         {
             AdminAutoresListarViewModel model = new AdminAutoresListarViewModel();
@@ -41,14 +40,12 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpGet]
-        [Route("admin/autores/{id}")]
         public IActionResult Detalhar(int id)
         {
             return View();
         }
 
         [HttpGet]
-        [Route("admin/autores/criar")]
         public IActionResult Criar()
         {
             AdminAutoresCriarViewModel model = new AdminAutoresCriarViewModel();
@@ -60,7 +57,6 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpPost]
-        [Route("admin/autores/criar")]
         public RedirectToActionResult Criar(AdminAutoresCriarRequestModel request)
         {
             var nome = request.Nome;
@@ -79,7 +75,6 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpGet]
-        [Route("admin/autores/editar/{id}")]
         public IActionResult Editar(int id)
         {
             AdminAutoresEditarViewModel model = new AdminAutoresEditarViewModel();
@@ -96,13 +91,12 @@ namespace PWABlog.Controllers.Admin
 
             model.Id = autorEditar.Id;
             model.Nome= autorEditar.Nome;
-            model.TituloPagina += model.Nome;
+            model.TituloPagina += model.TituloPagina;
 
             return View(model);
         }
 
         [HttpPost]
-        [Route("admin/autores/editar/{id}")]
         public RedirectToActionResult Editar(AdminAutoresEditarRequestModel request)
         {
             var id = request.Id;
@@ -122,7 +116,6 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpGet]
-        [Route("admin/autores/remover/{id}")]
         public IActionResult Remover(int id)
         {
             AdminAutoresRemoverViewModel model = new AdminAutoresRemoverViewModel();
@@ -143,7 +136,6 @@ namespace PWABlog.Controllers.Admin
         }
 
         [HttpPost]
-        [Route("admin/autores/remover/{id}")]
         public RedirectToActionResult Remover(AdminAutoresRemoverRequestModel request)
         {
             var id = request.Id;
